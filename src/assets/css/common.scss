@@ -1,0 +1,49 @@
+html, body {
+    font: normal 400 14px/1.5 "Microsoft Yahei", Helvetica, arial, sans-serif;
+    color: #000;
+    background: #F9F9F9;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+li {
+    list-style: none;
+}
+
+img {
+    width: auto;
+    height: auto;
+}
+
+@mixin clearfix {
+    &:before {
+        content: '';
+        display: table;
+    }
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+        overflow: hidden;
+    }
+}
+
+@function toRem($px, $base: 75) {
+    @return $px / $base * 1rem;
+}
+
+html {
+    font-size: 16px;
+}
+
+.wrap {
+    min-width: 1000px;
+    margin: 0 auto;
+}

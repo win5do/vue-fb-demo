@@ -1,0 +1,19 @@
+import 'minireset.css';
+import axios from 'axios';
+import ElementUI from 'element-ui';
+import Vue from 'vue';
+import '../../theme/index.css';
+import Index from '../renders/index.vue';
+import router from '../routes/router';
+import store from '../state/vuex-store';
+import '../assets/css/common.scss';
+
+Vue.use(ElementUI);
+Vue.prototype.$http = axios;
+
+let vm = new Vue({
+    el: '#app',
+    router,
+    store,
+    render: h => h(Index),
+});
