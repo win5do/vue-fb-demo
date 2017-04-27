@@ -1,0 +1,17 @@
+{
+  "name": "vue-admin-back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "5f",
+  "license": "ISC",
+  "devDependencies": {
+    "mysql": "^2.13.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
