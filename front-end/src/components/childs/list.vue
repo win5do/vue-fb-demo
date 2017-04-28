@@ -105,6 +105,15 @@
                 multipleSelection: []
             }
         },
+        created () {
+            this.$http.get('/api/goods-list')
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
     }
 </script>
 

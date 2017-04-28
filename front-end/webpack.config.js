@@ -84,18 +84,18 @@ module.exports = {
         }
     },
     devServer: {
-        port: 9999,
+        port: 8888,
         historyApiFallback: true,
         stats: 'minimal',  // 输入精简信息
         overlay: true, // 将错误显示在html之上
-        // proxy: {
-        //     '/': {
-        //         target: 'http://sunday.so',
-        //         secure: false,
-        //         changeOrigin: true,
-        //         pathRewrite: {'^/api': ''},
-        //     }
-        // }
+        proxy: {
+            '/api': {
+                target: 'http://localhost:9999',
+                secure: false,
+                changeOrigin: true,
+                // pathRewrite: {'^/api': ''},
+            }
+        }
     },
     performance: {
         hints: false
