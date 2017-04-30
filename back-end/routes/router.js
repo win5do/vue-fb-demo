@@ -4,7 +4,7 @@ let goods =require('../controls/goods');
 let router = express.Router();
 
 router.get('/goods-list', goods.getGoodsList);
-router.get('/goods-detail', goods.getOneGoods);
+router.post('/goods-detail', goods.getOneGoods);
 router.post('/goods-add', goods.addGoods);
 router.post('/goods-delete', goods.deleteGoods);
 

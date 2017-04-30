@@ -29,35 +29,47 @@ module.exports = {
 
     // 获取商品详情
     getOneGoods (req, res) {
-        let id = req.params.id;
+        let id = req.body.id;
         pool.getConnection((err, conn) => {
             conn.query(sql.queryById, ['goods', id], (err, rows) => {
                 if (err) throw err;
 
                 rows = formatDate(rows);
-                res.json(rows);
+                res.json(rows[0]);
 
                 conn.release();
             });
         });
     },
 
-    // 添加商品
+    // 添加|更新 商品
     addGoods (req, res) {
+        let id = req.body.id;
+        console.log(id);
         let name = req.body.name;
         let price = req.body.price;
-        let arr = [name, price];
+        let query, arr;
 
+        if (id) {
+            // 更新
+            query = 'UPDATE goods SET name=?, price=? WHERE id=?';
+            arr = [name, price, id]
+        } else {
+            // 新增
+            query = 'INSERT INTO goods(name, price) VALUES(?,?)';
+            arr = [name, price]
+        }
         pool.getConnection((err, conn) => {
-            conn.query('INSERT INTO goods(name, price) VALUES(?,?)', arr, (err, rows) => {
+            conn.query(query, arr, (err, rows) => {
                 if (err) throw err;
-                console.log(rows);
+
                 res.status(201).send('done');
 
                 conn.release();
             });
         });
     },
+
 
     // 删除商品
     deleteGoods (req, res) {
@@ -67,8 +79,10 @@ module.exports = {
         pool.getConnection((err, conn) => {
             conn.query(sql.del, ['goods', id], (err, rows) => {
                 if (err) throw err;
+
                 console.log(rows);
                 res.status(201).send('done');
+
                 conn.release();
             });
         });
