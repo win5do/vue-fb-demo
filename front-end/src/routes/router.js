@@ -12,7 +12,7 @@ export default new Router({
         {
             path: '/admin',
             redirect: '/admin/list',
-            name: 'list',
+            name: 'admin',
             component: Admin,
             children: [
                 {

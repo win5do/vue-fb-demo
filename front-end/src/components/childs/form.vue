@@ -11,44 +11,44 @@
         </el-form-item>
 
 
-        <el-form-item label="商品库存">
-            <el-input-number v-model="form.num" :min="0"></el-input-number>
-        </el-form-item>
+        <!--<el-form-item label="商品库存">-->
+            <!--<el-input-number v-model="form.num" :min="0"></el-input-number>-->
+        <!--</el-form-item>-->
 
-        <el-form-item label="商品属性">
-            <el-checkbox-group v-model="form.type">
-                <el-checkbox label="推荐" name="type"></el-checkbox>
-                <el-checkbox label="优选" name="type"></el-checkbox>
-                <el-checkbox label="折扣" name="type"></el-checkbox>
-                <el-checkbox label="热门" name="type"></el-checkbox>
-            </el-checkbox-group>
-        </el-form-item>
+        <!--<el-form-item label="商品属性">-->
+            <!--<el-checkbox-group v-model="form.type">-->
+                <!--<el-checkbox label="推荐" name="type"></el-checkbox>-->
+                <!--<el-checkbox label="优选" name="type"></el-checkbox>-->
+                <!--<el-checkbox label="折扣" name="type"></el-checkbox>-->
+                <!--<el-checkbox label="热门" name="type"></el-checkbox>-->
+            <!--</el-checkbox-group>-->
+        <!--</el-form-item>-->
 
-        <el-form-item label="商品图片">
-            <el-upload
-                    class="upload-demo"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :file-list="fileList2"
-                    list-type="picture">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload>
-        </el-form-item>
+        <!--<el-form-item label="商品图片">-->
+            <!--<el-upload-->
+                    <!--class="upload-demo"-->
+                    <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+                    <!--:on-preview="handlePreview"-->
+                    <!--:on-remove="handleRemove"-->
+                    <!--:file-list="fileList2"-->
+                    <!--list-type="picture">-->
+                <!--<el-button size="small" type="primary">点击上传</el-button>-->
+                <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+            <!--</el-upload>-->
+        <!--</el-form-item>-->
 
-        <el-form-item label="商品视频">
-            <el-upload
-                    class="upload-demo"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :file-list="fileList2"
-                    list-type="picture">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">商品视频或gif图</div>
-            </el-upload>
-        </el-form-item>
+        <!--<el-form-item label="商品视频">-->
+            <!--<el-upload-->
+                    <!--class="upload-demo"-->
+                    <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+                    <!--:on-preview="handlePreview"-->
+                    <!--:on-remove="handleRemove"-->
+                    <!--:file-list="fileList2"-->
+                    <!--list-type="picture">-->
+                <!--<el-button size="small" type="primary">点击上传</el-button>-->
+                <!--<div slot="tip" class="el-upload__tip">商品视频或gif图</div>-->
+            <!--</el-upload>-->
+        <!--</el-form-item>-->
 
         <el-form-item>
             <el-button type="primary" @click="onSubmit">添加商品</el-button>
@@ -58,6 +58,9 @@
 </template>
 
 <script>
+    import func from '../../public/func';
+    import api from '../../public/api';
+
     export default {
         name: 'form',
         data() {
@@ -65,21 +68,18 @@
                 form: {
                     name: '',
                     price: 0,
-                    num: 0,
-                    region: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
                 }
             }
         },
         methods: {
             onSubmit() {
-                console.log('submit!');
-            }
+                func.ajaxPost(api.goodsAdd, this.form, res => {
+                    if (res.status === 201) {
+                        this.$message.success('添加成功');
+                    }
+                });
+            },
+
         },
     }
 </script>
