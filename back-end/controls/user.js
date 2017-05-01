@@ -8,15 +8,41 @@ let pool = mysql.createPool(db);
 function formatDate(rows) {
     return rows.map(row => {
         let date = moment(row.create_time).format('YYYY-MM-DD');
-        return Object.assign({}, row, {create_time: date});
+        let obj = {};
+
+        switch (row.role) {
+            case 1:
+                obj.role = '普通用户';
+                break;
+            case 2:
+                obj.role = '管理员';
+                break;
+            case 100:
+                obj.role = '超级管理员';
+        }
+
+        delete row.password;
+
+        return Object.assign({}, row, {create_time: date}, obj);
     });
 }
 
 module.exports = {
-    // 获取商品列表
+    // 登录
+    login () {
+    },
+
+    // 注销
+    logout () {
+    },
+
+    // 权限变更
+    changeRole () {
+    },
+
     fetchAll (req, res) {
         pool.getConnection((err, conn) => {
-            conn.query(sql.queryAll, 'goods', (err, rows) => {
+            conn.query(sql.queryAll, 'user', (err, rows) => {
                 if (err) throw err;
 
                 rows = formatDate(rows);
@@ -27,38 +53,16 @@ module.exports = {
         });
     },
 
-    // 获取商品详情
-    fetchById (req, res) {
-        let id = req.body.id;
-        pool.getConnection((err, conn) => {
-            conn.query(sql.queryById, ['goods', id], (err, rows) => {
-                if (err) throw err;
-
-                rows = formatDate(rows);
-                res.json(rows[0]);
-
-                conn.release();
-            });
-        });
-    },
-
-    // 添加|更新 商品
+    // 添加用户
     addOne (req, res) {
-        let id = req.body.id;
-        console.log(id);
         let name = req.body.name;
-        let price = req.body.price;
+        let pass = req.body.pass;
+        let role = req.body.role;
         let query, arr;
 
-        if (id) {
-            // 更新
-            query = 'UPDATE goods SET name=?, price=? WHERE id=?';
-            arr = [name, price, id];
-        } else {
-            // 新增
-            query = 'INSERT INTO goods(name, price) VALUES(?,?)';
-            arr = [name, price];
-        }
+        query = 'INSERT INTO user(name, password, role) VALUES(?, ?, ?)';
+        arr = [name, pass, role];
+
         pool.getConnection((err, conn) => {
             conn.query(query, arr, (err, rows) => {
                 if (err) throw err;
@@ -77,7 +81,7 @@ module.exports = {
         let id = req.body.id;
 
         pool.getConnection((err, conn) => {
-            conn.query(sql.del, ['goods', id], (err, rows) => {
+            conn.query(sql.del, ['user', id], (err, rows) => {
                 if (err) throw err;
 
                 console.log(rows);
@@ -93,7 +97,7 @@ module.exports = {
         let id = req.body.id;
 
         pool.getConnection((err, conn) => {
-            let query = conn.query(`DELETE FROM goods WHERE id IN ?`, [[id]], (err, rows) => {
+            let query = conn.query(`DELETE FROM user WHERE id IN ?`, [[id]], (err, rows) => {
                 if (err) throw err;
 
                 res.status(201).send('done');
@@ -104,5 +108,4 @@ module.exports = {
             console.log(query.sql);
         });
     },
-
 };

@@ -1,6 +1,8 @@
 <template>
     <div class="list">
         <el-table
+            ref="multipleTable"
+            @selection-change="handleSelectionChange"
             :data="tableData"
             border
             tooltip-effect="dark"
@@ -11,7 +13,7 @@
 
             <el-table-column
                 prop="name"
-                label="商品名称">
+                label="商品名">
             </el-table-column>
 
             <el-table-column
@@ -24,49 +26,31 @@
             </el-table-column>
 
             <el-table-column
-                width="90"
-                label="单价">
+                label="价格">
                 <template scope="scope">
-                    {{ scope.row.price}}  元
+                    {{ scope.row.price }}元
                 </template>
             </el-table-column>
 
-            <!--<el-table-column-->
-            <!--prop="Id"-->
-            <!--label="商品链接"-->
-            <!--show-overflow-tooltip>-->
-            <!--</el-table-column>-->
 
             <el-table-column label="操作">
                 <template scope="scope">
                     <el-button
                         size="small"
-                        @click="handleEdit(scope.row)">修改
+                        @click="handleEdit(scope.row)">修改商品
                     </el-button>
-                    <!--<el-button-->
-                    <!--size="small"-->
-                    <!--type="success"-->
-                    <!--@click="handleOnSale">上架-->
-                    <!--</el-button>-->
-                    <!--<el-button-->
-                    <!--size="small"-->
-                    <!--type="warning"-->
-                    <!--@click="hhandleOutSale">下架-->
-                    <!--</el-button>-->
                     <el-button
                         size="small"
                         type="danger"
-                        @click="handleDelete(scope.row)">删除
+                        @click="handleDelete(scope.row)">删除商品
                     </el-button>
                 </template>
             </el-table-column>
 
         </el-table>
         <div class="btns">
-            <!--<el-button type="success">加入礼盒</el-button>-->
-            <el-button type="info">批量上架</el-button>
-            <el-button type="warning">批量下架</el-button>
-            <el-button type="danger">批量删除</el-button>
+            <el-button type="success">批量上架</el-button>
+            <el-button type="danger" @click="goodsDeleteMulti">批量删除</el-button>
         </div>
     </div>
 </template>
@@ -80,7 +64,7 @@
         data() {
             return {
                 tableData: [],
-                multipleSelection: []
+                multipleSelection: [],
             }
         },
 
@@ -100,6 +84,27 @@
             handleEdit (row) {
                 this.$router.push({name: 'form', query: {id: row.Id}});
             },
+
+            goodsDeleteMulti () {
+                let multi = this.multipleSelection
+                let id = multi.map(el => {
+                    return el.Id;
+                });
+
+                func.ajaxPost(api.goodsDeleteMulti, {id}, res => {
+                    if (res.status === 201) {
+                        this.$message.success('删除成功');
+                        multi.forEach(el => {
+                            let i = this.tableData.indexOf(el);
+                            this.tableData.splice(i, 1);
+                        });
+                    }
+                });
+            },
+
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            }
         },
 
         created () {

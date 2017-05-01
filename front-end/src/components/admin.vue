@@ -1,16 +1,30 @@
 <template>
     <div>
         <my-header></my-header>
-        <el-row class="index-row">
+        <el-row id="index-row">
             <el-col :span="4">
-                <el-menu default-active="1" theme="dark">
-                    <router-link :to="{name: 'list'}">
-                        <el-menu-item index="2"><i class="el-icon-menu"></i>列表</el-menu-item>
-                    </router-link>
+                <el-menu default-active="1" theme="dark" class="top-menu">
+                    <el-submenu index="1">
+                        <template slot="title">商品管理</template>
+                        <router-link :to="{name: 'goods-list'}">
+                            <el-menu-item index="1-1">商品列表</el-menu-item>
+                        </router-link>
 
-                    <router-link :to="{name: 'form'}">
-                        <el-menu-item index="3"><i class="el-icon-setting"></i>新增</el-menu-item>
-                    </router-link>
+                        <router-link :to="{name: 'goods-form'}">
+                            <el-menu-item index="1-2">新增商品</el-menu-item>
+                        </router-link>
+                    </el-submenu>
+
+                    <el-submenu index="2">
+                        <template slot="title">用户管理</template>
+                        <router-link :to="{name: 'user-list'}">
+                            <el-menu-item index="2-1">用户列表</el-menu-item>
+                        </router-link>
+
+                        <router-link :to="{name: 'user-form'}">
+                            <el-menu-item index="2-2">新增用户</el-menu-item>
+                        </router-link>
+                    </el-submenu>
                 </el-menu>
             </el-col>
             <el-col :span="20" class="left">
@@ -21,10 +35,10 @@
 </template>
 
 <script>
-    import Header from './childs/header.vue';
+    import Header from './common/header.vue';
 
     export default {
-        name: 'index',
+        name: 'admin',
         components: {
             'my-header': Header,
         },
@@ -37,10 +51,10 @@
         padding: 20px;
     }
 
-    .index-row {
+    #index-row {
         min-width: 1200px;
         height: calc(100% - 60px);
-        .el-menu {
+        .top-menu {
             background: #666;
             border-radius: 0;
             height: 100%;
