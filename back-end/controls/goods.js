@@ -89,7 +89,7 @@ module.exports = {
     },
 
     // 批量删除
-    goodsDeleteMulti (req, res) {
+    deleteMulti (req, res) {
         let id = req.body.id;
 
         pool.getConnection((err, conn) => {

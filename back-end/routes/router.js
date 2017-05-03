@@ -9,12 +9,15 @@ router.get('/goods-list', goods.fetchAll);
 router.post('/goods-detail', goods.fetchById);
 router.post('/goods-add', goods.addOne);
 router.post('/goods-delete', goods.deleteOne);
-router.post('/goods-delete-multi', goods.goodsDeleteMulti);
+router.post('/goods-delete-multi', goods.deleteMulti);
 
 // user
 router.get('/user-list', user.fetchAll);
 router.post('/user-add', user.addOne);
 router.post('/user-delete', user.deleteOne);
-router.post('/user-delete-multi', user.goodsDeleteMulti);
+router.post('/user-delete-multi', user.deleteMulti);
+router.post('/user-login', user.login);
+router.post('/user-logout', user.logout);
+router.get('/user-auto-login', user.autoLogin);
 
 module.exports = router;

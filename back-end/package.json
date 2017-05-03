@@ -4,17 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node app"
   },
   "author": "5f",
   "license": "ISC",
-  "devDependencies": {
-    "mysql": "^2.13.0"
-  },
   "dependencies": {
+    "mysql": "^2.13.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "express-session": "^1.15.2",
     "moment": "^2.18.1"
+  },
+  "devDependencies": {
   }
 }

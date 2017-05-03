@@ -50,7 +50,7 @@
         </el-table>
         <div class="btns">
             <el-button type="success">批量上架</el-button>
-            <el-button type="danger" @click="goodsDeleteMulti">批量删除</el-button>
+            <el-button type="danger" @click="deleteMulti">批量删除</el-button>
         </div>
     </div>
 </template>
@@ -91,7 +91,7 @@
                     return el.Id;
                 });
 
-                func.ajaxPost(api.goodsDeleteMulti, {id}, res => {
+                func.ajaxPost(api.deleteMulti, {id}, res => {
                     if (res.status === 201) {
                         this.$message.success('删除成功');
                         multi.forEach(el => {

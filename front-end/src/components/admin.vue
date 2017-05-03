@@ -18,11 +18,15 @@
                     <el-submenu index="2">
                         <template slot="title">用户管理</template>
                         <router-link :to="{name: 'user-list'}">
-                            <el-menu-item index="2-1">用户列表</el-menu-item>
+                            <el-menu-item index="2-1"
+                                          @click="controlJump('user-list')">用户列表
+                            </el-menu-item>
                         </router-link>
 
                         <router-link :to="{name: 'user-form'}">
-                            <el-menu-item index="2-2">新增用户</el-menu-item>
+                            <el-menu-item index="2-2"
+                                          @click="controlJump('user-form')">新增用户
+                            </el-menu-item>
                         </router-link>
                     </el-submenu>
                 </el-menu>
@@ -39,9 +43,31 @@
 
     export default {
         name: 'admin',
+
         components: {
             'my-header': Header,
         },
+
+        computed: {
+          user_id () {
+            return this.$store.state.user_id;
+          },
+        },
+
+        methods: {
+            // 跳转控制
+            controlJump (target) {
+                if (!this.user_id) {
+                    this.$message.warning('权限不够，日后再说');
+
+                } else {
+
+                    this.$router.push({name: target});
+                }
+
+            }
+        },
+
     }
 </script>
 

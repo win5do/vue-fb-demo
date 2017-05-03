@@ -2,6 +2,7 @@ let mysql = require('mysql');
 let db = require('../configs/db');
 let sql = require('../sql/sql');
 let moment = require('moment');
+let bcrypt = require('bcryptjs');
 
 let pool = mysql.createPool(db);
 
@@ -28,17 +29,6 @@ function formatDate(rows) {
 }
 
 module.exports = {
-    // 登录
-    login () {
-    },
-
-    // 注销
-    logout () {
-    },
-
-    // 权限变更
-    changeRole () {
-    },
 
     fetchAll (req, res) {
         pool.getConnection((err, conn) => {
@@ -58,24 +48,31 @@ module.exports = {
         let name = req.body.name;
         let pass = req.body.pass;
         let role = req.body.role;
-        let query, arr;
+        let query = 'INSERT INTO user(user_name, password, role) VALUES(?, ?, ?)';
 
-        query = 'INSERT INTO user(name, password, role) VALUES(?, ?, ?)';
-        arr = [name, pass, role];
+        // 密码加盐
+        bcrypt.hash(pass, 10, (err, hash) => {
+            if (err) console.log(err);
 
-        pool.getConnection((err, conn) => {
-            conn.query(query, arr, (err, rows) => {
-                if (err) throw err;
+            pass = hash;
 
-                res.status(201).send('done');
+            let arr = [name, pass, role];
 
-                conn.release();
+            pool.getConnection((err, conn) => {
+                conn.query(query, arr, (err, rows) => {
+                    if (err) throw err;
+
+                    res.status(201).send('done');
+
+                    conn.release();
+                });
             });
         });
+
     },
 
 
-    // 删除商品
+    // 删除用户
     deleteOne (req, res) {
 
         let id = req.body.id;
@@ -84,7 +81,6 @@ module.exports = {
             conn.query(sql.del, ['user', id], (err, rows) => {
                 if (err) throw err;
 
-                console.log(rows);
                 res.status(201).send('done');
 
                 conn.release();
@@ -93,7 +89,7 @@ module.exports = {
     },
 
     // 批量删除
-    goodsDeleteMulti (req, res) {
+    deleteMulti (req, res) {
         let id = req.body.id;
 
         pool.getConnection((err, conn) => {
@@ -108,4 +104,95 @@ module.exports = {
             console.log(query.sql);
         });
     },
+
+    // 登录
+    login (req, res) {
+
+        let user_name = req.body.user_name;
+        let pass = req.body.pass;
+
+        pool.getConnection((err, conn) => {
+            conn.query('SELECT * from user where user_name = ?', [user_name], (err, rows) => {
+                if (err) throw err;
+
+                if (!rows.length) {
+                    res.status(401).send('用户名不存在');
+
+                    conn.release();
+
+                    return;
+                }
+
+                let password = rows[0].password;
+
+                bcrypt.compare(pass, password, (err, sure) => {
+                    if (sure) {
+                        let user = {
+                            user_id: rows[0].Id,
+                            role: rows[0].role,
+                        };
+
+                        req.session.login = user;
+
+                        console.log(req.session.login);
+
+                        res.status(201).json(user);
+                    } else {
+                        res.status(301).send('密码错误');
+                    }
+
+                    conn.release();
+                });
+
+            });
+        });
+    },
+
+    // 后台网站好像不需要注册
+    // 注册
+    // register (req, res) {
+    //     let user_name = req.body.user_name;
+    //     let pass = req.body.pass;
+    // },
+
+    // 自动登录
+    autoLogin (req, res) {
+
+        if (req.session.login) {
+            res.status(201).send('自动登录');
+
+        } else {
+
+            res.status(401).send('not found');
+        }
+    },
+
+    // 注销
+    logout (req, res) {
+        req.session = null;
+
+        res.status(201).send('done');
+    },
+
+    // 权限控制
+    controlVisit (req, res, next) {
+        if (req.session.login.role && req.session.login.role < 10) {
+            res.send('权限不够');
+            return;
+        }
+
+        next();
+    },
+
+    // 权限变更
+    changeRole () {
+        let user_role = req.body.user_role; // 操作者role
+        if (user_role < 10) {
+            res.status(400).end();
+        }
+
+        let role = req.body.role;
+        let user_name = req.body.user_name;
+    },
+
 };

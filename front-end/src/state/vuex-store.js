@@ -4,11 +4,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        user_id: undefined,
         goodsDetail: null
     },
     mutations: {
-         goodsDetail (state, payload) {
-             state.goodsDetail = payload;
-         },
+        goodsDetail (state, payload) {
+            state.goodsDetail = payload;
+        },
     }
 });

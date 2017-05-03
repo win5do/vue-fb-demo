@@ -6,7 +6,7 @@ export default {
     goodsDetail: host + '/goods-detail',
     goodsDelete: host + '/goods-delete',
     goodsAdd: host + '/goods-add',
-    goodsDeleteMulti: host + '/goods-delete-multi',
+    deleteMulti: host + '/goods-delete-multi',
     
     // user
     userList: host + '/user-list',
