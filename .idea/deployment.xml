@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="ali">
+    <serverData>
+      <paths name="ali">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/back-end/static" local="$PROJECT_DIR$/front-end/dist" web="" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="node_modules/" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

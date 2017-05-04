@@ -17,7 +17,7 @@ module.exports = {
     entry: entry,
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist/',
+        publicPath: '/',
         filename: 'js/[name].js',
         // chunkFilename: 'js/[name][id].chunk.js', // 公共代码块
     },
