@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="ali">
+  <component name="PublishConfigData" serverName="ali-wf" deleteMissingItems="true">
     <serverData>
-      <paths name="ali">
+      <paths name="ali-root">
         <serverdata>
           <mappings>
             <mapping deploy="/home/back-end/static" local="$PROJECT_DIR$/front-end/dist" web="" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="node_modules/" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="ali-wf">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/var/www/html" local="$PROJECT_DIR$/front-end/dist" web="" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="node_modules/" />

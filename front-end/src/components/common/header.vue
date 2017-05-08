@@ -1,12 +1,11 @@
 <template lang="pug">
-    div
-        header
-            .wrap.header-wrap
-                .logo
-                    img(src='../../assets/imgs/logo.svg')
-                .header-links
-                    li: a(href="#") 登录
-                    li: a(href="#") 注销
+    header
+        .wrap.header-wrap
+            .logo
+                img(src='../../assets/imgs/logo.svg')
+            .header-links
+                li: a(href="#") 登录
+                li: a(href="#") 注销
 </template>
 
 <script>

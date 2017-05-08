@@ -80,6 +80,10 @@
     #index-row {
         min-width: 1200px;
         height: calc(100% - 60px);
+        display: flex;
+        position: fixed;
+        width: 100%;
+
         .top-menu {
             background: #666;
             border-radius: 0;

@@ -2,7 +2,15 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="8c748c1c-3be7-4428-bc5c-985156be3e8c" name="ali" url="http://39.108.4.6">
+      <webServer id="8c748c1c-3be7-4428-bc5c-985156be3e8c" name="ali-root" url="http://39.108.4.6">
+        <fileTransfer host="39.108.4.6" port="22" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="34d16916-7b5e-480a-b425-7f7aabaeb484" name="ali-wf" url="http://39.108.4.6">
         <fileTransfer host="39.108.4.6" port="22" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
