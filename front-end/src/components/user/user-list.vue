@@ -12,7 +12,7 @@
             </el-table-column>
 
             <el-table-column
-                prop="name"
+                prop="user_name"
                 label="用户名">
             </el-table-column>
 

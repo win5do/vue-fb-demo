@@ -1,3 +1,4 @@
+//let host = '/api';
 let host = '/api';
 
 export default {
@@ -13,4 +14,5 @@ export default {
     userDelete: host + '/user-delete',
     userAdd: host + '/user-add',
     userDeleteMulti: host + '/user-delete-multi',
+    userLogin: host + '/user-login',
 }

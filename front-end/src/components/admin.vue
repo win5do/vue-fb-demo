@@ -49,9 +49,9 @@
         },
 
         computed: {
-          user_id () {
-            return this.$store.state.user_id;
-          },
+            user_id () {
+                return this.$store.state.user_id;
+            },
         },
 
         methods: {

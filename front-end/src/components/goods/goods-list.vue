@@ -85,7 +85,7 @@
                 this.$router.push({name: 'form', query: {id: row.Id}});
             },
 
-            goodsDeleteMulti () {
+            deleteMulti () {
                 let multi = this.multipleSelection
                 let id = multi.map(el => {
                     return el.Id;

@@ -116,6 +116,7 @@ module.exports = {
                 if (err) throw err;
 
                 if (!rows.length) {
+
                     res.status(401).send('用户名不存在');
 
                     conn.release();
@@ -124,8 +125,11 @@ module.exports = {
                 }
 
                 let password = rows[0].password;
+                console.log(rows);
 
                 bcrypt.compare(pass, password, (err, sure) => {
+                    if (err) throw err;
+
                     if (sure) {
                         let user = {
                             user_id: rows[0].Id,

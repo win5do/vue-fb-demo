@@ -1,12 +1,12 @@
 <template>
     <div class="login">
         <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="login-form">
-            <el-form-item label="账号" prop="userName">
-                <el-input type="password" v-model="loginForm.pass" auto-complete="off"></el-input>
+            <el-form-item label="账号" prop="user_name">
+                <el-input type="text" v-model="loginForm.user_name" auto-complete="off"></el-input>
             </el-form-item>
 
             <el-form-item label="密码" prop="pass">
-                <el-input type="password" v-model="loginForm.checkPass" auto-complete="off"></el-input>
+                <el-input type="password" v-model="loginForm.pass" auto-complete="off"></el-input>
             </el-form-item>
 
             <el-form-item>
@@ -18,17 +18,19 @@
 </template>
 
 <script>
+    import func from '../../public/func';
+    import api from '../../public/api';
 
     export default {
         name: 'login',
         data() {
             return {
                 loginForm: {
-                    userName: '',
+                    user_name: '',
                     pass: '',
                 },
                 rules: {
-                    userName: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+                    user_name: [{required: true, message: '请输入用户名', trigger: 'blur'}],
                     pass: [{required: true, message: '请输入密码', trigger: 'blur'}],
                 }
             };
@@ -37,10 +39,15 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
+                        func.ajaxPost(api.userLogin, this.loginForm, res => {
+                            if (res.status === 201) {
+                                this.$message.success('登陆成功');
+                                this.$router.push('/admin');
+
+                            }
+
+                        });
+
                     }
                 });
             },

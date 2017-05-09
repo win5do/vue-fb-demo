@@ -1,11 +1,11 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Admin from '../components/admin.vue';
-import Login from '../components/common/login.vue';
-import GoodsForm from '../components/goods/goods-form.vue';
-import GoodsList from '../components/goods/goods-list.vue';
-import UserForm from '../components/user/user-form.vue';
-import UserList from '../components/user/user-list.vue';
+import Vue from "vue";
+import Router from "vue-router";
+import Admin from "../components/admin.vue";
+import Login from "../components/common/login.vue";
+import GoodsForm from "../components/goods/goods-form.vue";
+import GoodsList from "../components/goods/goods-list.vue";
+import UserForm from "../components/user/user-form.vue";
+import UserList from "../components/user/user-list.vue";
 
 Vue.use(Router);
 
