@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL DEFAULT '',
-  `password` varchar(40) NOT NULL DEFAULT '',
+  `password` varchar(100) NOT NULL DEFAULT '',
   `role` tinyint(3) NOT NULL DEFAULT '0' COMMENT '用户权限',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
