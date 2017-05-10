@@ -82,46 +82,32 @@ module.exports = {
 
     // 登录
     login (req, res) {
-
         let user_name = req.body.user_name;
         let pass = req.body.pass;
 
         func.connPool('SELECT * from user where user_name = ?', [user_name], rows => {
 
             if (!rows.length) {
-                res.status(401).send('用户名不存在');
-
-                conn.release();
-
+                res.status(204).send('用户名不存在');
                 return;
             }
 
             let password = rows[0].password;
+            bcrypt.compare(pass, password, (err, sure) => {
+                if (sure) {
+                    let user = {
+                        user_id: rows[0].Id,
+                        user_name: rows[0].user_name,
+                        role: rows[0].role,
+                    };
 
-            function comparePass() {
-                return new Promise((resolve, reject) => {
-                    bcrypt.compare(pass, password, (err, sure) => {
-                        if (sure) {
-                            let user = {
-                                user_id: rows[0].Id,
-                                role: rows[0].role,
-                            };
+                    req.session.login = user;
 
-                            req.session.login = user;
-
-                            res.status(201).json(user);
-                        } else {
-                            res.status(301).send('密码错误');
-                        }
-
-                        resolve();
-                    });
-                });
-            }
-
-            (async function () {
-                await comparePass();
-            })();
+                    res.status(201).json(user);
+                } else {
+                    res.status(204).send('密码错误');
+                }
+            });
 
         });
 
@@ -130,19 +116,18 @@ module.exports = {
 
     // 自动登录
     autoLogin (req, res) {
-
-        if (req.session.login) {
-            res.status(201).send('自动登录');
+        let user = req.session.login;
+        if (user) {
+            res.status(201).send(user);
 
         } else {
-
-            res.status(401).send('not found');
+            res.status(204).send('not found');
         }
     },
 
     // 注销
     logout (req, res) {
-        req.session = null;
+        req.session.login = null;
 
         res.status(201).send('done');
     },
@@ -150,7 +135,7 @@ module.exports = {
     // 权限控制
     controlVisit (req, res, next) {
         if (req.session.login.role && req.session.login.role < 10) {
-            res.send('权限不够');
+            res.status(204).send('权限不够');
             return;
         }
 
@@ -161,7 +146,7 @@ module.exports = {
     changeRole () {
         let user_role = req.body.user_role; // 操作者role
         if (user_role < 10) {
-            res.status(400).end();
+            res.status(204).end();
         }
 
         let role = req.body.role;

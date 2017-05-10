@@ -15,4 +15,6 @@ export default {
     userAdd: host + '/user-add',
     userDeleteMulti: host + '/user-delete-multi',
     userLogin: host + '/user-login',
+    userLogout: host + '/user-logout',
+    userAutoLogin: host + '/user-auto-login',
 }

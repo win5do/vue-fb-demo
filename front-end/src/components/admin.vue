@@ -17,17 +17,13 @@
 
                     <el-submenu index="2">
                         <template slot="title">用户管理</template>
-                        <router-link :to="{name: 'user-list'}">
-                            <el-menu-item index="2-1"
-                                          @click="controlJump('user-list')">用户列表
-                            </el-menu-item>
-                        </router-link>
+                        <el-menu-item index="2-1"
+                                      @click="controlJump('user-list')">用户列表
+                        </el-menu-item>
 
-                        <router-link :to="{name: 'user-form'}">
-                            <el-menu-item index="2-2"
-                                          @click="controlJump('user-form')">新增用户
-                            </el-menu-item>
-                        </router-link>
+                        <el-menu-item index="2-2"
+                                      @click="controlJump('user-form')">新增用户
+                        </el-menu-item>
                     </el-submenu>
                 </el-menu>
             </el-col>
@@ -49,15 +45,15 @@
         },
 
         computed: {
-            user_id () {
-                return this.$store.state.user_id;
+            user () {
+                return this.$store.state.user;
             },
         },
 
         methods: {
             // 跳转控制
             controlJump (target) {
-                if (!this.user_id) {
+                if (this.user.role < 10) {
                     this.$message.warning('权限不够，日后再说');
 
                 } else {
