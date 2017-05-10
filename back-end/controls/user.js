@@ -1,10 +1,7 @@
-let mysql = require('mysql');
-let db = require('../configs/db');
 let sql = require('../sql/sql');
 let moment = require('moment');
 let bcrypt = require('bcryptjs');
-
-let pool = mysql.createPool(db);
+let func = require('../sql/func');
 
 function formatDate(rows) {
     return rows.map(row => {
@@ -31,16 +28,11 @@ function formatDate(rows) {
 module.exports = {
 
     fetchAll (req, res) {
-        pool.getConnection((err, conn) => {
-            conn.query(sql.queryAll, 'user', (err, rows) => {
-                if (err) throw err;
-
-                rows = formatDate(rows);
-                res.json(rows);
-
-                conn.release();
-            });
+        func.connPool(sql.queryAll, 'user', rows => {
+            rows = formatDate(rows);
+            res.json(rows);
         });
+
     },
 
     // 添加用户
@@ -58,15 +50,10 @@ module.exports = {
 
             let arr = [name, pass, role];
 
-            pool.getConnection((err, conn) => {
-                conn.query(query, arr, (err, rows) => {
-                    if (err) throw err;
-
-                    res.status(201).send('done');
-
-                    conn.release();
-                });
+            func.connPool(query, arr, rows => {
+                res.status(201).send('done');
             });
+
         });
 
     },
@@ -77,32 +64,20 @@ module.exports = {
 
         let id = req.body.id;
 
-        pool.getConnection((err, conn) => {
-            conn.query(sql.del, ['user', id], (err, rows) => {
-                if (err) throw err;
-
-                res.status(201).send('done');
-
-                conn.release();
-            });
+        func.connPool(sql.del, ['user', id], rows => {
+            res.status(201).send('done');
         });
+
     },
 
     // 批量删除
     deleteMulti (req, res) {
         let id = req.body.id;
 
-        pool.getConnection((err, conn) => {
-            let query = conn.query(`DELETE FROM user WHERE id IN ?`, [[id]], (err, rows) => {
-                if (err) throw err;
-
-                res.status(201).send('done');
-
-                conn.release();
-            });
-
-            console.log(query.sql);
+        func.connPool('DELETE FROM user WHERE id IN ?', [[id]], rows => {
+            res.status(201).send('done');
         });
+
     },
 
     // 登录
@@ -111,49 +86,47 @@ module.exports = {
         let user_name = req.body.user_name;
         let pass = req.body.pass;
 
-        pool.getConnection((err, conn) => {
-            conn.query('SELECT * from user where user_name = ?', [user_name], (err, rows) => {
-                if (err) throw err;
+        func.connPool('SELECT * from user where user_name = ?', [user_name], rows => {
 
-                if (!rows.length) {
-                    res.status(401).send('用户名不存在');
+            if (!rows.length) {
+                res.status(401).send('用户名不存在');
 
-                    conn.release();
+                conn.release();
 
-                    return;
-                }
+                return;
+            }
 
-                let password = rows[0].password;
+            let password = rows[0].password;
 
-                bcrypt.compare(pass, password, (err, sure) => {
-                    if (sure) {
-                        let user = {
-                            user_id: rows[0].Id,
-                            role: rows[0].role,
-                        };
+            function comparePass() {
+                return new Promise((resolve, reject) => {
+                    bcrypt.compare(pass, password, (err, sure) => {
+                        if (sure) {
+                            let user = {
+                                user_id: rows[0].Id,
+                                role: rows[0].role,
+                            };
 
-                        req.session.login = user;
+                            req.session.login = user;
 
-                        console.log(req.session.login);
+                            res.status(201).json(user);
+                        } else {
+                            res.status(301).send('密码错误');
+                        }
 
-                        res.status(201).json(user);
-                    } else {
-                        res.status(301).send('密码错误');
-                    }
-
-                    conn.release();
+                        resolve();
+                    });
                 });
+            }
 
-            });
+            (async function () {
+                await comparePass();
+            })();
+
         });
+
     },
 
-    // 后台网站好像不需要注册
-    // 注册
-    // register (req, res) {
-    //     let user_name = req.body.user_name;
-    //     let pass = req.body.pass;
-    // },
 
     // 自动登录
     autoLogin (req, res) {
