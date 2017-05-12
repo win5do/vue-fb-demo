@@ -2,7 +2,7 @@ let sql = require('../sql/sql');
 let moment = require('moment');
 let func = require('../sql/func');
 
-function formatDate(rows) {
+function formatData(rows) {
     return rows.map(row => {
         let date = moment(row.create_time).format('YYYY-MM-DD');
         return Object.assign({}, row, {create_time: date});
@@ -14,7 +14,7 @@ module.exports = {
     // 获取商品列表
     fetchAll (req, res) {
         func.connPool(sql.queryAll, 'goods', rows => {
-            rows = formatDate(rows);
+            rows = formatData(rows);
             res.json(rows);
         });
 
@@ -25,7 +25,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool(sql.queryById, ['goods', id], rows => {
-            rows = formatDate(rows);
+            rows = formatData(rows);
             res.json(rows[0]);
 
         });

@@ -3,7 +3,7 @@ let moment = require('moment');
 let bcrypt = require('bcryptjs');
 let func = require('../sql/func');
 
-function formatDate(rows) {
+function formatData(rows) {
     return rows.map(row => {
         let date = moment(row.create_time).format('YYYY-MM-DD');
         let obj = {};
@@ -29,7 +29,7 @@ module.exports = {
 
     fetchAll (req, res) {
         func.connPool(sql.queryAll, 'user', rows => {
-            rows = formatDate(rows);
+            rows = formatData(rows);
             res.json(rows);
         });
 
@@ -96,7 +96,7 @@ module.exports = {
             bcrypt.compare(pass, password, (err, sure) => {
                 if (sure) {
                     let user = {
-                        user_id: rows[0].Id,
+                        user_id: rows[0].user_id,
                         user_name: rows[0].user_name,
                         role: rows[0].role,
                     };
@@ -143,14 +143,23 @@ module.exports = {
     },
 
     // 权限变更
-    changeRole () {
-        let user_role = req.body.user_role; // 操作者role
-        if (user_role < 10) {
+    changeRole (req, res) {
+        let role = req.body.role;
+        let change_role = req.body.change_role;
+
+        if (role < 10 || change_role === 100) {
             res.status(204).end();
+
+            return;
         }
 
-        let role = req.body.role;
-        let user_name = req.body.user_name;
+        let change_user = req.body.change_user;
+
+        func.connPool('UPDATE user SET role= ? WHERE user_name = ?', [change_user], rows => {
+
+            res.status(201).send('done');
+        });
+
     },
 
 };

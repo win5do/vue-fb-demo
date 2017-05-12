@@ -5,10 +5,12 @@ let pool = mysql.createPool(db);
 module.exports = {
     connPool (cla, val, cb) {
         pool.getConnection((err, conn) => {
-            conn.query(cla, val, (err, rows) => {
+            let q = conn.query(cla, val, (err, rows, f) => {
                 if (err) throw err;
+                console.log(rows);
 
                 cb(rows);
+                console.log(q);
 
                 conn.release();
             });
