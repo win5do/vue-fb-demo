@@ -29,7 +29,7 @@
 
             logout () {
                 this.func.ajaxGet(this.api.userLogout, res => {
-                    if (res.status === 201) {
+                    if (res.data.code === 200) {
                         this.$store.commit('user', null);
                     }
                 });

@@ -24,9 +24,8 @@ let vm = new Vue({
 
 router.beforeEach((to, from, next) => {
     vm.func.ajaxGet(vm.api.userAutoLogin, res => {
-        if (res.status === 201) {
-            vm.$store.commit('user', res.data);
-            vm.$router.push('/admin');
+        if (res.data.code === 200) {
+            vm.$store.commit('user', res.data.user);
 
         } else {
             vm.$router.push('/');

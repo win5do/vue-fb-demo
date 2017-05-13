@@ -51,7 +51,7 @@ module.exports = {
         }
 
         func.connPool(query, arr, rows => {
-            res.status(201).send('done');
+            res.send({code:200,msg:'done'});
 
         });
 
@@ -64,7 +64,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool(sql.del, ['goods', id], rows => {
-            res.status(201).send('done');
+            res.send({code:200,msg:'done'});
 
         });
 
@@ -75,7 +75,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool('DELETE FROM goods WHERE id IN ?', [[id]], rows => {
-            res.status(201).send('done');
+            res.send({code:200,msg:'done'});
 
         });
 

@@ -74,7 +74,7 @@
             // 删除
             handleDelete(row) {
                 func.ajaxPost(api.userDelete, {id: row.Id}, res => {
-                    if (res.status === 201) {
+                    if (res.data.code === 200) {
                         let index = this.tableData.indexOf(row);
                         this.tableData.splice(index, 1);
                         this.$message.success('删除成功');
@@ -94,7 +94,7 @@
                 });
 
                 func.ajaxPost(api.userDeleteMulti, {id}, res => {
-                    if (res.status === 201) {
+                    if (res.data.code === 200) {
                         this.$message.success('删除成功');
                         multi.forEach(el => {
                             let i = this.tableData.indexOf(el);

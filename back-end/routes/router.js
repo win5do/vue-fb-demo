@@ -1,6 +1,6 @@
 let express = require('express');
-let goods =require('../controls/goods');
-let user =require('../controls/user');
+let goods = require('../controls/goods');
+let user = require('../controls/user');
 
 let router = express.Router();
 
@@ -13,11 +13,13 @@ router.post('/goods-delete-multi', goods.deleteMulti);
 
 // user
 router.get('/user-list', user.fetchAll);
+router.get('/user-logout', user.logout);
+router.get('/user-auto-login', user.autoLogin); // 更改权限
+
 router.post('/user-add', user.addOne);
 router.post('/user-delete', user.deleteOne);
 router.post('/user-delete-multi', user.deleteMulti);
 router.post('/user-login', user.login);
-router.get('/user-logout', user.logout);
-router.get('/user-auto-login', user.autoLogin);
+router.post('/user-change-role', user.controlVisit, user.changeRole);
 
 module.exports = router;

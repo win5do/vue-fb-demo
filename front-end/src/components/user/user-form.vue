@@ -46,7 +46,7 @@
                 }
 
                 func.ajaxPost(api.userAdd, this.form, res => {
-                    if (res.status === 201) {
+                    if (res.data.code === 200) {
                         this.$message.success('操作成功');
                         this.$router.push({name: 'user-list'});
                     }

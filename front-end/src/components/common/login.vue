@@ -40,7 +40,8 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         func.ajaxPost(api.userLogin, this.loginForm, res => {
-                            if (res.status === 201) {
+
+                            if (res.data.code === 200) {
                                 this.$message.success('登陆成功');
                                 this.$router.push('/admin');
 

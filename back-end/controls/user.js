@@ -51,7 +51,7 @@ module.exports = {
             let arr = [name, pass, role];
 
             func.connPool(query, arr, rows => {
-                res.status(201).send('done');
+                res.send({code: 200, msg: 'done'});
             });
 
         });
@@ -65,7 +65,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool(sql.del, ['user', id], rows => {
-            res.status(201).send('done');
+            res.send({code: 200, msg: 'done'});
         });
 
     },
@@ -75,7 +75,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool('DELETE FROM user WHERE id IN ?', [[id]], rows => {
-            res.status(201).send('done');
+            res.send({code: 200, msg: 'done'});
         });
 
     },
@@ -88,7 +88,7 @@ module.exports = {
         func.connPool('SELECT * from user where user_name = ?', [user_name], rows => {
 
             if (!rows.length) {
-                res.status(204).send('用户名不存在');
+                res.send({code: 400, msg: '用户名不存在'});
                 return;
             }
 
@@ -103,9 +103,9 @@ module.exports = {
 
                     req.session.login = user;
 
-                    res.status(201).json(user);
+                    res.json({code: 200, msg: '登录成功', user: user});
                 } else {
-                    res.status(204).send('密码错误');
+                    res.send({code: 400, msg: '密码错误'});
                 }
             });
 
@@ -118,10 +118,10 @@ module.exports = {
     autoLogin (req, res) {
         let user = req.session.login;
         if (user) {
-            res.status(201).send(user);
+            res.send({code: 200, msg: '自动登录', user: user});
 
         } else {
-            res.status(204).send('not found');
+            res.json({code: 400, msg: 'not found'});
         }
     },
 
@@ -129,15 +129,17 @@ module.exports = {
     logout (req, res) {
         req.session.login = null;
 
-        res.status(201).send('done');
+        res.send({code: 200, msg: 'done'});
     },
 
     // 权限控制
     controlVisit (req, res, next) {
         if (req.session.login.role && req.session.login.role < 10) {
-            res.status(204).send('权限不够');
+
+            res.send({code: 400, msg: '权限不够'});
             return;
         }
+
 
         next();
     },
@@ -147,17 +149,23 @@ module.exports = {
         let role = req.body.role;
         let change_role = req.body.change_role;
 
-        if (role < 10 || change_role === 100) {
-            res.status(204).end();
+        if (change_role === 100) {
+            res.send({code: 400, msg: '权限不够'});
 
             return;
         }
+        console.log('r');
 
         let change_user = req.body.change_user;
 
-        func.connPool('UPDATE user SET role= ? WHERE user_name = ?', [change_user], rows => {
+        func.connPool('UPDATE user SET role= ? WHERE user_name = ?', [change_role, change_user], rows => {
 
-            res.status(201).send('done');
+            if (rows.affectedRows) {
+
+                res.send({code: 200, msg: 'done'});
+
+            }
+
         });
 
     },
