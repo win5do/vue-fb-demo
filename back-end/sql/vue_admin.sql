@@ -1,46 +1,64 @@
-﻿# Host: localhost  (Version: 5.7.18)
-# Date: 2017-05-02 22:46:22
-# Generator: MySQL-Front 5.3  (Build 4.234)
+/*
+Navicat MySQL Data Transfer
 
-/*!40101 SET NAMES utf8 */;
+Source Server         : wf
+Source Server Version : 50718
+Source Host           : 39.108.4.6:3306
+Source Database       : vue_admin
 
-#
-# Structure for table "goods"
-#
+Target Server Type    : MYSQL
+Target Server Version : 50718
+File Encoding         : 65001
 
+Date: 2017-05-14 23:29:49
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for goods
+-- ----------------------------
 DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) NOT NULL DEFAULT '',
-  `price` float(10,2) NOT NULL DEFAULT '0.00',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+  `name` varchar(50) NOT NULL DEFAULT 'noname',
+  `price` float(10,2) NOT NULL DEFAULT '0.00',
+  `inventory` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '库存',
+  `category` varchar(50) DEFAULT '' COMMENT '分类',
+  `imgs` varchar(50) DEFAULT '',
+  `onsale` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否上架',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
 
-#
-# Data for table "goods"
-#
+-- ----------------------------
+-- Records of goods
+-- ----------------------------
+INSERT INTO `goods` VALUES ('41', '2017-05-09 16:39:57', '2017-05-09 16:39:57', '女盆友', '5555555.00', '0', null, null, '0');
+INSERT INTO `goods` VALUES ('42', '2017-05-09 16:40:09', '2017-05-09 16:40:09', '大妹子', '5666666.00', '0', null, null, '0');
+INSERT INTO `goods` VALUES ('59', '2017-05-14 20:28:18', '2017-05-14 20:28:18', 'dasdas', '1564564.00', '0', null, null, '0');
 
-INSERT INTO `goods` VALUES (39,'1',0.00,'2017-05-01 20:27:41','2017-05-01 20:27:41'),(40,'2',4564.00,'2017-05-01 20:27:50','2017-05-01 20:27:50');
-
-#
-# Structure for table "user"
-#
-
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) NOT NULL DEFAULT '',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(40) NOT NULL DEFAULT '',
   `password` varchar(100) NOT NULL DEFAULT '',
   `role` tinyint(3) NOT NULL DEFAULT '0' COMMENT '用户权限',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
-#
-# Data for table "user"
-#
-
-INSERT INTO `user` VALUES (24,'666','666',100,'2017-05-01 21:57:53','2017-05-01 21:57:53'),(25,'11','122',1,'2017-05-01 22:04:37','2017-05-01 22:04:37');
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('26', 'root', '$2a$10$RREavyfC7Pm1EXYIjcZS6.Ec3qMVveuwMm.GcXoCZOSMbNkxfYVLW', '100', '2017-05-09 23:14:07', '2017-05-09 23:14:07');
+INSERT INTO `user` VALUES ('27', '666', '$2a$10$soVuVqbLSWwliu/6MT0xQ.3VLbXK2FRZhij/50Ni3E5SGwGaVb.ou', '1', '2017-05-09 23:38:06', '2017-05-13 14:47:04');
+INSERT INTO `user` VALUES ('34', 'test', '$2a$10$ozwCHpePh3Cl64bomQY2nOb9XpzM7zlMA5KJG5CEhISTAh7zitFsy', '10', '2017-05-13 14:58:47', '2017-05-14 21:08:47');
+SET FOREIGN_KEY_CHECKS=1;
