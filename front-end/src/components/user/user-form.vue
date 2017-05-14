@@ -48,38 +48,16 @@
                 func.ajaxPost(api.userAdd, this.form, res => {
                     if (res.data.code === 200) {
                         this.$message.success('操作成功');
-                        this.$router.push({name: 'user-list'});
+                        this.$router.push('/admin/user-list');
                     }
                 });
             },
 
             onCancel () {
-                this.$router.push({name: 'user-list'});
+                this.$router.push('/admin/user-list');
             },
 
         },
 
     }
 </script>
-
-<style lang="scss">
-    .form-contain {
-        width: 50%;
-        margin: 0 auto;
-
-        .el-form-item__content {
-            display: flex;
-            align-items: center;
-            height: 36px;
-        }
-    }
-
-    .el-input-number {
-        [class^='el-input-number'] {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-    }
-</style>

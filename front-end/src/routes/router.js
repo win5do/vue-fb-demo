@@ -19,29 +19,24 @@ export default new Router({
             children: [
                 {
                     path: '/admin/goods-list',
-                    name: 'goods-list',
                     component: GoodsList,
                 },
                 {
                     path: '/admin/goods-form',
-                    name: 'goods-form',
                     component: GoodsForm,
                 },
                 {
                     path: '/admin/user-list',
-                    name: 'user-list',
                     component: UserList,
                 },
                 {
                     path: '/admin/user-form',
-                    name: 'user-form',
                     component: UserForm,
                 },
             ]
         },
         {
             path: '/',
-            name: 'login',
             component: Login,
         },
     ]

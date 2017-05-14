@@ -1,16 +1,17 @@
 <template>
-    <div>
+    <div class='admin'>
         <my-header></my-header>
-        <el-row id="index-row">
-            <el-col :span="4">
+
+        <div class='admin-main'>
+            <div class='admin-main-right'>
                 <el-menu default-active="1" theme="dark" class="top-menu">
                     <el-submenu index="1">
                         <template slot="title">商品管理</template>
-                        <router-link :to="{name: 'goods-list'}">
+                        <router-link to="/admin/goods-list">
                             <el-menu-item index="1-1">商品列表</el-menu-item>
                         </router-link>
 
-                        <router-link :to="{name: 'goods-form'}">
+                        <router-link to="/admin/goods-form">
                             <el-menu-item index="1-2">新增商品</el-menu-item>
                         </router-link>
                     </el-submenu>
@@ -18,19 +19,21 @@
                     <el-submenu index="2">
                         <template slot="title">用户管理</template>
                         <el-menu-item index="2-1"
-                                      @click="controlJump('user-list')">用户列表
+                                      @click="controlJump('/admin/user-list')">用户列表
                         </el-menu-item>
 
                         <el-menu-item index="2-2"
-                                      @click="controlJump('user-form')">新增用户
+                                      @click="controlJump('/admin/user-form')">新增用户
                         </el-menu-item>
                     </el-submenu>
                 </el-menu>
-            </el-col>
-            <el-col :span="20" class="left">
+            </div>
+
+            <div class='admin-main-left'>
                 <router-view></router-view>
-            </el-col>
-        </el-row>
+            </div>
+
+        </div>
     </div>
 </template>
 
@@ -58,7 +61,7 @@
 
                 } else {
 
-                    this.$router.push({name: target});
+                    this.$router.push(target);
                 }
 
             }
@@ -66,24 +69,3 @@
 
     }
 </script>
-
-
-<style lang="scss">
-    .left {
-        padding: 20px;
-    }
-
-    #index-row {
-        min-width: 1200px;
-        height: calc(100% - 60px);
-        display: flex;
-        position: fixed;
-        width: 100%;
-
-        .top-menu {
-            background: #666;
-            border-radius: 0;
-            height: 100%;
-        }
-    }
-</style>

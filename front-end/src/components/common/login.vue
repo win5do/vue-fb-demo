@@ -23,6 +23,7 @@
 
     export default {
         name: 'login',
+        
         data() {
             return {
                 loginForm: {
@@ -35,6 +36,7 @@
                 }
             };
         },
+        
         methods: {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -52,30 +54,23 @@
                     }
                 });
             },
+            
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             }
         },
+        
+        created () {
+
+            this.func.ajaxGet(this.api.userAutoLogin, res => {
+                if (res.data.code === 200) {
+                    this.$store.commit('user', res.data.user);
+                    this.$router.push('/admin');
+                } else {
+                    this.$router.push('/');
+                }
+            });
+
+        },
     }
 </script>
-
-
-<style lang="scss">
-    .login {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        background: url("../../assets/imgs/login-bg.jpg") no-repeat center;
-        background-size: cover;
-        .login-form {
-            width: 400px;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            .el-form-item__label {
-                color: #fff;
-            }
-        }
-    }
-</style>

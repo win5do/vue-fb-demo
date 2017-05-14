@@ -20,6 +20,6 @@ router.post('/user-add', user.addOne);
 router.post('/user-delete', user.deleteOne);
 router.post('/user-delete-multi', user.deleteMulti);
 router.post('/user-login', user.login);
-router.post('/user-change-role', user.controlVisit, user.changeRole);
+router.post('/user-change-role', user.controlVisit, user.editGoods);
 
 module.exports = router;

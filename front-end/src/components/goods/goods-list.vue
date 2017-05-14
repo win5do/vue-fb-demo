@@ -1,5 +1,5 @@
 <template>
-    <div class="list">
+    <div class="admin-list">
         <el-table
             ref="multipleTable"
             @selection-change="handleSelectionChange"
@@ -37,7 +37,7 @@
                 <template scope="scope">
                     <el-button
                         size="small"
-                        @click="handleEdit(scope.row)">修改商品
+                        @click="editGoods(scope.row)">修改商品
                     </el-button>
                     <el-button
                         size="small"
@@ -81,8 +81,8 @@
             },
 
             // 修改
-            handleEdit (row) {
-                this.$router.push({name: 'form', query: {id: row.Id}});
+            editGoods (row) {
+                this.$router.push({path: '/admin/goods-form', query: {id: row.Id}});
             },
 
             deleteMulti () {
@@ -116,15 +116,3 @@
 
     }
 </script>
-
-<style lang="scss">
-    .list {
-        .btns {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .el-table__empty-block {
-            height: auto;
-        }
-    }
-</style>

@@ -1,5 +1,6 @@
 <template>
     <el-form ref="form" :model="form" label-width="80px" class="form-contain">
+
         <el-form-item label="商品名称">
             <el-input v-model="form.name"></el-input>
         </el-form-item>
@@ -54,6 +55,7 @@
             <el-button type="primary" @click="onSubmit">{{isNew?'添加商品':'修改商品'}}</el-button>
             <el-button @click="onCancel">取消</el-button>
         </el-form-item>
+
     </el-form>
 </template>
 
@@ -63,6 +65,7 @@
 
     export default {
         name: 'form',
+
         data() {
             return {
                 isNew: 1, // 是否是添加
@@ -83,20 +86,20 @@
                 func.ajaxPost(api.goodsAdd, this.form, res => {
                     if (res.data.code === 200) {
                         this.$message.success('操作成功');
-                        this.$router.push({name: 'list'});
+                        this.$router.push('/admin/goods-list');
                     }
                 });
             },
 
             onCancel () {
-                this.$router.push({name: 'list'});
+                this.$router.push('/admin/goods-list');
             },
 
         },
 
         created () {
             let id = this.$route.query.id;
-            console.log(id);
+
             if (id) {
                 this.isNew = 0;
                 func.ajaxPost(api.goodsDetail, {id}, res => {
@@ -105,21 +108,6 @@
                 });
             }
         },
+
     }
 </script>
-
-<style lang="scss">
-    .form-contain {
-        width: 50%;
-        margin: 0 auto;
-    }
-
-    .el-input-number {
-        [class^='el-input-number'] {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-    }
-</style>

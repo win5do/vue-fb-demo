@@ -6,7 +6,7 @@ import "../../theme/index.css";
 import Index from "../renders/index.vue";
 import router from "../routes/router";
 import store from "../state/vuex-store";
-import "../assets/css/common.scss";
+import "../assets/css/admin.scss";
 import func from "../public/func";
 import api from "../public/api";
 
@@ -22,15 +22,15 @@ let vm = new Vue({
     render: h => h(Index),
 });
 
-router.beforeEach((to, from, next) => {
-    vm.func.ajaxGet(vm.api.userAutoLogin, res => {
-        if (res.data.code === 200) {
-            vm.$store.commit('user', res.data.user);
-
-        } else {
-            vm.$router.push('/');
-        }
-    });
-
-    next();
-});
+//router.beforeEach((to, from, next) => {
+//    vm.func.ajaxGet(vm.api.userAutoLogin, res => {
+//        if (res.data.code === 200) {
+//            vm.$store.commit('user', res.data.user);
+//
+//        } else {
+//            vm.$router.push('/');
+//        }
+//    });
+//
+//    next();
+//});

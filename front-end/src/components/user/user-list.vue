@@ -1,5 +1,5 @@
 <template>
-    <div class="list">
+    <div class="admin-list">
         <el-table
             ref="multipleTable"
             @selection-change="handleSelectionChange"
@@ -35,21 +35,31 @@
 
             <el-table-column label="操作">
                 <template scope="scope">
-                    <el-button
-                        size="small"
-                        @click="handleEdit(scope.row)">修改权限
-                    </el-button>
+
+                    <el-dropdown trigger="click" @command="editGoods" @click='curRow = scope.row'>
+                        <el-button size="small"
+                                   @click='curRow = scope.row'>
+                            修改权限<i class="el-icon-caret-bottom el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="1" :disabled='scope.row.role === 1'>普通用户</el-dropdown-item>
+                            <el-dropdown-item command="10">管理员</el-dropdown-item>
+                            <el-dropdown-item command="100">超级管理员</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+
                     <el-button
                         size="small"
                         type="danger"
                         @click="handleDelete(scope.row)">删除用户
                     </el-button>
+
                 </template>
             </el-table-column>
 
         </el-table>
         <div class="btns">
-            <router-link :to="{name: 'user-form'}">
+            <router-link to="/admin/user-form">
                 <el-button type="success">新增用户</el-button>
             </router-link>
             <el-button type="danger" @click="deleteMulti">批量删除</el-button>
@@ -66,7 +76,12 @@
         data() {
             return {
                 tableData: [],
+
                 multipleSelection: [],
+
+                roles: [1, 10, 100],
+
+                curRow: null,
             }
         },
 
@@ -83,8 +98,8 @@
             },
 
             // 修改
-            handleEdit (row) {
-                this.$router.push({name: 'form', query: {id: row.Id}});
+            editGoods (row) {
+
             },
 
             deleteMulti () {
@@ -118,15 +133,3 @@
 
     }
 </script>
-
-<style lang="scss">
-    .list {
-        .btns {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .el-table__empty-block {
-            height: auto;
-        }
-    }
-</style>

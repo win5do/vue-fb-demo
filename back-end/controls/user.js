@@ -129,7 +129,7 @@ module.exports = {
     logout (req, res) {
         req.session.login = null;
 
-        res.send({code: 200, msg: 'done'});
+        res.send({code: 200, msg: '注销'});
     },
 
     // 权限控制
