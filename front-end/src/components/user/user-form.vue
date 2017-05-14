@@ -24,8 +24,6 @@
 </template>
 
 <script>
-    import func from '../../public/func';
-    import api from '../../public/api';
 
     export default {
         name: 'form',
@@ -45,7 +43,7 @@
                     return;
                 }
 
-                func.ajaxPost(api.userAdd, this.form, res => {
+                this.func.ajaxPost(this.api.userAdd, this.form, res => {
                     if (res.data.code === 200) {
                         this.$message.success('操作成功');
                         this.$router.push('/admin/user-list');

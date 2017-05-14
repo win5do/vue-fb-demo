@@ -17,7 +17,7 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-app.use('/api', router);
+app.use(router);
 
 app.listen(port, () => {
     console.log(`devServer start on port:${ port}`);

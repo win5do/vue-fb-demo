@@ -18,8 +18,6 @@
 </template>
 
 <script>
-    import func from '../../public/func';
-    import api from '../../public/api';
 
     export default {
         name: 'login',
@@ -41,9 +39,10 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        func.ajaxPost(api.userLogin, this.loginForm, res => {
+                        this.func.ajaxPost(this.api.userLogin, this.loginForm, res => {
 
                             if (res.data.code === 200) {
+                                this.$store.commit('user', res.data.user);
                                 this.$message.success('登陆成功');
                                 this.$router.push('/admin');
 
@@ -59,18 +58,12 @@
                 this.$refs[formName].resetFields();
             }
         },
-        
+
         created () {
-
-            this.func.ajaxGet(this.api.userAutoLogin, res => {
-                if (res.data.code === 200) {
-                    this.$store.commit('user', res.data.user);
-                    this.$router.push('/admin');
-                } else {
-                    this.$router.push('/');
-                }
-            });
-
+            if (this.$store.state.user) {
+                this.$router.push('/admin');
+            }
         },
+
     }
 </script>

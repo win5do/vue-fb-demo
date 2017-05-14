@@ -8,7 +8,7 @@ import router from "../routes/router";
 import store from "../state/vuex-store";
 import "../assets/css/admin.scss";
 import func from "../public/func";
-import api from "../public/api";
+import api from "../../../back-end/api";
 
 Vue.use(ElementUI);
 Vue.prototype.$http = axios;

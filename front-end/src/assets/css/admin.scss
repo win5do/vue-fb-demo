@@ -84,7 +84,7 @@ header {
     .admin-main-left {
         flex: auto;
         padding: 20px;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 }
 
@@ -101,19 +101,4 @@ header {
 .form-contain {
     width: 50%;
     margin: 0 auto;
-
-    .el-form-item__content {
-        display: flex;
-        align-items: center;
-        height: 36px;
-    }
-}
-
-.el-input-number {
-    [class^='el-input-number'] {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-    }
 }

@@ -10,8 +10,10 @@ let entry = (() => {
     getEntry('src/views/pages/*.pug').forEach(fileName => {
         obj[fileName] = './src/js/' + fileName + '.js';
     });
+
     return obj;
 })();
+
 
 module.exports = {
     entry: entry,
@@ -135,6 +137,8 @@ if (process.env.NODE_ENV === 'production') {
     ]);
 }
 
+console.log(1);
+
 // 自动生存htmlPlugins
 getEntry('src/views/pages/*.pug').forEach(fileName => {
     let conf = {
@@ -149,6 +153,9 @@ getEntry('src/views/pages/*.pug').forEach(fileName => {
         chunks: [fileName],
     };
     module.exports.plugins.push(new HtmlWebpackPlugin(conf));
+
+
+    console.log(2);
 });
 
 // 获取文件名函数

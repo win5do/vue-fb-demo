@@ -1,25 +1,27 @@
 let express = require('express');
 let goods = require('../controls/goods');
 let user = require('../controls/user');
+let api = require('../api');
 
 let router = express.Router();
 
 // goods
-router.get('/goods-list', goods.fetchAll);
-router.post('/goods-detail', goods.fetchById);
-router.post('/goods-add', goods.addOne);
-router.post('/goods-delete', goods.deleteOne);
-router.post('/goods-delete-multi', goods.deleteMulti);
+router.get(api.goodsList, goods.fetchAll);
+
+router.post(api.goodsDetail, goods.fetchById);
+router.post(api.goodsAdd, goods.addOne);
+router.post(api.goodsDelete, goods.deleteOne);
+router.post(api.goodsDeleteMulti, goods.deleteMulti);
 
 // user
-router.get('/user-list', user.fetchAll);
-router.get('/user-logout', user.logout);
-router.get('/user-auto-login', user.autoLogin); // 更改权限
+router.get(api.userList, user.fetchAll);
+router.get(api.userLogout, user.logout);
+router.get(api.userAutoLogin, user.autoLogin); // 自动登录
 
-router.post('/user-add', user.addOne);
-router.post('/user-delete', user.deleteOne);
-router.post('/user-delete-multi', user.deleteMulti);
-router.post('/user-login', user.login);
-router.post('/user-change-role', user.controlVisit, user.editGoods);
+router.post(api.userAdd, user.addOne);
+router.post(api.userDelete, user.deleteOne);
+router.post(api.userDeleteMulti, user.deleteMulti);
+router.post(api.userLogin, user.login); // 登录
+router.post(api.userChangeRole, user.controlVisit, user.changeRole); // 更改权限
 
 module.exports = router;

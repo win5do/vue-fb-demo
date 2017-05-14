@@ -12,7 +12,7 @@ function formatData(rows) {
             case 1:
                 obj.role = '普通用户';
                 break;
-            case 2:
+            case 10:
                 obj.role = '管理员';
                 break;
             case 100:
@@ -30,7 +30,7 @@ module.exports = {
     fetchAll (req, res) {
         func.connPool(sql.queryAll, 'user', rows => {
             rows = formatData(rows);
-            res.json(rows);
+            res.json({code: 200, msg: 'ok', users: rows});
         });
 
     },
@@ -51,7 +51,7 @@ module.exports = {
             let arr = [name, pass, role];
 
             func.connPool(query, arr, rows => {
-                res.send({code: 200, msg: 'done'});
+                res.json({code: 200, msg: 'done'});
             });
 
         });
@@ -65,7 +65,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool(sql.del, ['user', id], rows => {
-            res.send({code: 200, msg: 'done'});
+            res.json({code: 200, msg: 'done'});
         });
 
     },
@@ -75,7 +75,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool('DELETE FROM user WHERE id IN ?', [[id]], rows => {
-            res.send({code: 200, msg: 'done'});
+            res.json({code: 200, msg: 'done'});
         });
 
     },
@@ -88,7 +88,7 @@ module.exports = {
         func.connPool('SELECT * from user where user_name = ?', [user_name], rows => {
 
             if (!rows.length) {
-                res.send({code: 400, msg: '用户名不存在'});
+                res.json({code: 400, msg: '用户名不存在'});
                 return;
             }
 
@@ -105,7 +105,7 @@ module.exports = {
 
                     res.json({code: 200, msg: '登录成功', user: user});
                 } else {
-                    res.send({code: 400, msg: '密码错误'});
+                    res.json({code: 400, msg: '密码错误'});
                 }
             });
 
@@ -118,7 +118,7 @@ module.exports = {
     autoLogin (req, res) {
         let user = req.session.login;
         if (user) {
-            res.send({code: 200, msg: '自动登录', user: user});
+            res.json({code: 200, msg: '自动登录', user: user});
 
         } else {
             res.json({code: 400, msg: 'not found'});
@@ -129,43 +129,36 @@ module.exports = {
     logout (req, res) {
         req.session.login = null;
 
-        res.send({code: 200, msg: '注销'});
+        res.json({code: 200, msg: '注销'});
     },
 
     // 权限控制
     controlVisit (req, res, next) {
         if (req.session.login.role && req.session.login.role < 10) {
-
-            res.send({code: 400, msg: '权限不够'});
+            res.json({code: 400, msg: '权限不够'});
             return;
         }
-
 
         next();
     },
 
     // 权限变更
     changeRole (req, res) {
-        let role = req.body.role;
+        let role = req.session.login.role;
         let change_role = req.body.change_role;
 
-        if (change_role === 100) {
-            res.send({code: 400, msg: '权限不够'});
-
+        if (role !== 100 && change_role === 100) {
+            res.json({code: 400, msg: '权限不够'});
             return;
         }
-        console.log('r');
 
-        let change_user = req.body.change_user;
+        let user_id = req.body.id;
 
-        func.connPool('UPDATE user SET role= ? WHERE user_name = ?', [change_role, change_user], rows => {
-
+        func.connPool('UPDATE user SET role= ? WHERE id = ?', [change_role, user_id], rows => {
+            console.log(rows);
             if (rows.affectedRows) {
-
-                res.send({code: 200, msg: 'done'});
-
+                res.json({code: 200, msg: 'done'});
             }
-
         });
 
     },

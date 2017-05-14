@@ -1,6 +1,7 @@
 <template>
     <div class="admin-list">
         <el-table
+            v-loading='load'
             ref="multipleTable"
             @selection-change="handleSelectionChange"
             :data="tableData"
@@ -56,8 +57,6 @@
 </template>
 
 <script>
-    import func from '../../public/func';
-    import api from '../../public/api';
 
     export default {
         name: 'list',
@@ -65,13 +64,15 @@
             return {
                 tableData: [],
                 multipleSelection: [],
+
+                load: false, // loading
             }
         },
 
         methods: {
             // 删除
             handleDelete(row) {
-                func.ajaxPost(api.goodsDelete, {id: row.Id}, res => {
+                this.func.ajaxPost(this.api.goodsDelete, {id: row.id}, res => {
                     if (res.data.code === 200) {
                         let index = this.tableData.indexOf(row);
                         this.tableData.splice(index, 1);
@@ -82,16 +83,16 @@
 
             // 修改
             editGoods (row) {
-                this.$router.push({path: '/admin/goods-form', query: {id: row.Id}});
+                this.$router.push({path: '/admin/goods-form', query: {id: row.id}});
             },
 
             deleteMulti () {
                 let multi = this.multipleSelection
                 let id = multi.map(el => {
-                    return el.Id;
+                    return el.id;
                 });
 
-                func.ajaxPost(api.deleteMulti, {id}, res => {
+                this.func.ajaxPost(this.api.deleteMulti, {id}, res => {
                     if (res.data.code === 200) {
                         this.$message.success('删除成功');
                         multi.forEach(el => {
@@ -108,8 +109,11 @@
         },
 
         created () {
-            func.ajaxGet(api.goodsList, res => {
-                this.tableData = res.data;
+            this.load = true;
+
+            this.func.ajaxGet(this.api.goodsList, res => {
+                this.tableData = res.data.goods;
+                this.load = false;
             });
         },
 

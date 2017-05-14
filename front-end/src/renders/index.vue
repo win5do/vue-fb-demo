@@ -11,10 +11,8 @@
 
         created () {
             this.func.ajaxGet(this.api.userAutoLogin, res => {
-                if (res.status === 201) {
-                    this.$store.commit('user', res.data);
-                    this.$router.push('/admin');
-
+                if (res.data.code === 200) {
+                    this.$store.commit('user', res.data.user);
                 } else {
                     this.$router.push('/');
                 }

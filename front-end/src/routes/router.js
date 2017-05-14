@@ -14,7 +14,6 @@ export default new Router({
         {
             path: '/admin',
             redirect: '/admin/goods-list',
-            name: 'admin',
             component: Admin,
             children: [
                 {

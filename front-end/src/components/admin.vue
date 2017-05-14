@@ -4,7 +4,7 @@
 
         <div class='admin-main'>
             <div class='admin-main-right'>
-                <el-menu default-active="1" theme="dark" class="top-menu">
+                <el-menu theme="dark" class="top-menu">
                     <el-submenu index="1">
                         <template slot="title">商品管理</template>
                         <router-link to="/admin/goods-list">
@@ -57,10 +57,9 @@
             // 跳转控制
             controlJump (target) {
                 if (this.user.role < 10) {
-                    this.$message.warning('权限不够，日后再说');
+                    this.$message.warning('权限不够，努力升级');
 
                 } else {
-
                     this.$router.push(target);
                 }
 

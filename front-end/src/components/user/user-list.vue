@@ -1,6 +1,7 @@
 <template>
     <div class="admin-list">
         <el-table
+            v-loading='load'
             ref="multipleTable"
             @selection-change="handleSelectionChange"
             :data="tableData"
@@ -36,15 +37,17 @@
             <el-table-column label="操作">
                 <template scope="scope">
 
-                    <el-dropdown trigger="click" @command="editGoods" @click='curRow = scope.row'>
+                    <el-dropdown trigger="click" @command="changeRole">
                         <el-button size="small"
                                    @click='curRow = scope.row'>
                             修改权限<i class="el-icon-caret-bottom el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="1" :disabled='scope.row.role === 1'>普通用户</el-dropdown-item>
-                            <el-dropdown-item command="10">管理员</el-dropdown-item>
-                            <el-dropdown-item command="100">超级管理员</el-dropdown-item>
+                            <el-dropdown-item v-for='role in roles'
+                                              :key='role.val'
+                                              :command="role.val"
+                                              :disabled="scope.row.role == role.txt">{{ role.txt }}
+                            </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
 
@@ -68,8 +71,6 @@
 </template>
 
 <script>
-    import func from '../../public/func';
-    import api from '../../public/api';
 
     export default {
         name: 'list',
@@ -79,16 +80,31 @@
 
                 multipleSelection: [],
 
-                roles: [1, 10, 100],
+                roles: [
+                    {val: '1', txt: '普通用户'},
+                    {val: '10', txt: '管理员'},
+                    {val: '100', txt: '超级管理员'},
+                ],
 
                 curRow: null,
+
+                load: false, // loading
             }
         },
 
         methods: {
+            fetchList () {
+                this.load = true;
+
+                this.func.ajaxGet(this.api.userList, res => {
+                    this.tableData = res.data.users;
+                    this.load = false;
+                });
+            },
+
             // 删除
             handleDelete(row) {
-                func.ajaxPost(api.userDelete, {id: row.Id}, res => {
+                this.func.ajaxPost(this.api.userDelete, {id: row.Id}, res => {
                     if (res.data.code === 200) {
                         let index = this.tableData.indexOf(row);
                         this.tableData.splice(index, 1);
@@ -98,17 +114,25 @@
             },
 
             // 修改
-            editGoods (row) {
+            changeRole (val) {
+                this.func.ajaxPost(this.api.userChangeRole, {change_role: val, id: this.curRow.id},
+                    res => {
+                        if (res.data.code === 200) {
+                            this.$message.success('成功');
+                            this.fetchList();
+                        }
+                    }
+                );
 
             },
 
             deleteMulti () {
                 let multi = this.multipleSelection
                 let id = multi.map(el => {
-                    return el.Id;
+                    return el.id;
                 });
 
-                func.ajaxPost(api.userDeleteMulti, {id}, res => {
+                this.func.ajaxPost(this.api.userDeleteMulti, {id}, res => {
                     if (res.data.code === 200) {
                         this.$message.success('删除成功');
                         multi.forEach(el => {
@@ -125,9 +149,7 @@
         },
 
         created () {
-            func.ajaxGet(api.userList, res => {
-                this.tableData = res.data;
-            });
+            this.fetchList();
         },
 
 

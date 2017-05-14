@@ -15,7 +15,7 @@ module.exports = {
     fetchAll (req, res) {
         func.connPool(sql.queryAll, 'goods', rows => {
             rows = formatData(rows);
-            res.json(rows);
+            res.json({code: 200, msg: 'ok', goods: rows});
         });
 
     },
@@ -26,8 +26,7 @@ module.exports = {
 
         func.connPool(sql.queryById, ['goods', id], rows => {
             rows = formatData(rows);
-            res.json(rows[0]);
-
+            res.json({code: 200, msg: 'ok', goods: rows[0]});
         });
 
     },
