@@ -2,6 +2,8 @@ let express = require('express');
 let goods = require('../controls/goods');
 let user = require('../controls/user');
 let api = require('../api');
+let upload = require('../utils/upload');
+
 
 let router = express.Router();
 
@@ -12,6 +14,7 @@ router.post(api.goodsDetail, goods.fetchById);
 router.post(api.goodsAdd, goods.addOne);
 router.post(api.goodsDelete, goods.deleteOne);
 router.post(api.goodsDeleteMulti, goods.deleteMulti);
+router.post(api.goodsUploadImg, upload.single('avatar'),goods.uploadGoodsImg); // 图片上传
 
 // user
 router.get(api.userList, user.fetchAll);

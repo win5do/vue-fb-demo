@@ -13,10 +13,10 @@ function formatData(rows) {
 module.exports = {
     // 获取商品列表
     fetchAll (req, res) {
-                func.connPool(sql.queryAll, 'goods', rows => {
-                    rows = formatData(rows);
-                    res.json({code: 200, msg: 'ok', goods: rows});
-                });
+        func.connPool(sql.queryAll, 'goods', rows => {
+            rows = formatData(rows);
+            res.json({code: 200, msg: 'ok', goods: rows});
+        });
     },
 
     // 获取商品详情
@@ -78,4 +78,10 @@ module.exports = {
         });
 
     },
+
+    uploadGoodsImg (req, res) {
+        console.log(req.file);
+        res.send({code: 200, msg: 'done'});
+    },
+
 };
