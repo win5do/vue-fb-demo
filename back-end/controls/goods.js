@@ -13,11 +13,10 @@ function formatData(rows) {
 module.exports = {
     // 获取商品列表
     fetchAll (req, res) {
-        func.connPool(sql.queryAll, 'goods', rows => {
-            rows = formatData(rows);
-            res.json({code: 200, msg: 'ok', goods: rows});
-        });
-
+                func.connPool(sql.queryAll, 'goods', rows => {
+                    rows = formatData(rows);
+                    res.json({code: 200, msg: 'ok', goods: rows});
+                });
     },
 
     // 获取商品详情
@@ -50,7 +49,7 @@ module.exports = {
         }
 
         func.connPool(query, arr, rows => {
-            res.send({code:200,msg:'done'});
+            res.send({code: 200, msg: 'done'});
 
         });
 
@@ -63,7 +62,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool(sql.del, ['goods', id], rows => {
-            res.send({code:200,msg:'done'});
+            res.send({code: 200, msg: 'done'});
 
         });
 
@@ -74,7 +73,7 @@ module.exports = {
         let id = req.body.id;
 
         func.connPool('DELETE FROM goods WHERE id IN ?', [[id]], rows => {
-            res.send({code:200,msg:'done'});
+            res.send({code: 200, msg: 'done'});
 
         });
 
