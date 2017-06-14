@@ -1,6 +1,7 @@
 let fs = require('fs');
+let path = require('path');
 let moment = require('moment');
-let multer  = require('multer');
+let multer = require('multer');
 
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -8,11 +9,11 @@ let storage = multer.diskStorage({
         let t = moment().format('YYYY-M-D');
         let distPath = `../uploads/${t}`;
 
-        if (!fs.existsSync('../uploads'))  {
+        if (!fs.existsSync('../uploads')) {
             fs.mkdirSync('../uploads');
         }
 
-        if(!fs.existsSync(distPath)) {
+        if (!fs.existsSync(distPath)) {
             fs.mkdirSync(distPath);
         }
 
@@ -20,13 +21,11 @@ let storage = multer.diskStorage({
     },
 
     filename: function (req, file, cb) {
-        let ext = file.originalname.match(/\.\w+$/)[0];
-        console.log(ext);
-
+        let ext = path.extname(file.originalname);
         cb(null, file.fieldname + '-' + Date.now() + ext);
     }
 });
 
-let upload = multer({ storage: storage });
+let upload = multer({storage: storage});
 
 module.exports = upload;

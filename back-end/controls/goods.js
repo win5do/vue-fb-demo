@@ -1,6 +1,7 @@
 let sql = require('../sql/sql');
 let moment = require('moment');
 let func = require('../sql/func');
+let path = require('path');
 
 function formatData(rows) {
     return rows.map(row => {
@@ -80,8 +81,12 @@ module.exports = {
     },
 
     uploadGoodsImg (req, res) {
-        console.log(req.file);
-        res.send({code: 200, msg: 'done'});
-    },
+        let absolutePath = path.resolve(__dirname, req.file.path);
+        let a  = 2;
 
+        func.connPool('UPDATE goods SET imgs = ? WHERE id = ?', [absolutePath, 60], (err, rows) => {
+            console.log(a);
+            res.send({code: 200, msg: 'done', url: absolutePath});
+        }, res);
+    },
 };

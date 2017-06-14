@@ -18,6 +18,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="536fcfdb-904f-4e55-b53b-57ab941e41a7" name="w5.cc" url="http://bxu2359260602.my3w.com">
+        <fileTransfer host="bxu2359260602.my3w.com" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

@@ -3,17 +3,17 @@ let db = require('../configs/db');
 let pool = mysql.createPool(db);
 
 module.exports = {
-    connPool (cla, val, cb) {
+    connPool (sql, val, cb) {
         pool.getConnection((err, conn) => {
-            let q = conn.query(cla, val, (err, rows) => {
+            let q = conn.query(sql, val, (err, rows) => {
 
                 if (err) {
                     console.log(err);
                 }
 
-                console.log(q.sql);
+                console.log(a);
 
-                cb(rows);
+                cb(err, rows);
 
                 conn.release();
             });

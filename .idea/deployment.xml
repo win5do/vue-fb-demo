@@ -22,6 +22,13 @@
           </excludedPaths>
         </serverdata>
       </paths>
+      <paths name="w5.cc">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
   </component>
 </project>
